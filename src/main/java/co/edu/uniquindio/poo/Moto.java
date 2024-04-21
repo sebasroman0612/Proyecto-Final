@@ -9,6 +9,26 @@ package co.edu.uniquindio.poo;
  *
  * @author Sebastian Román - Yefry Fajardo - Santiago Gordillo
  */
-public class Moto {
+class Moto extends Vehiculo {
+    private final double velocidadMaxima;
+    
+    public Moto (String modelo, String placa, String propietario, double velocidadMaxima){
+        super(modelo,placa,propietario);
+        this.velocidadMaxima = velocidadMaxima;
+        
+    }
+    public double getvelocidadMaxima(){
+        return velocidadMaxima;
+}
+
+    @Override
+    public double getTarifaporHora() {
+       
+        return 1.000;
+       
+    }
+    
+    
+    
     
 }
