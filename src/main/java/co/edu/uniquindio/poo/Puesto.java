@@ -16,12 +16,15 @@ class Puesto {
         this.vehiculo = null; // Puesto inicia sin vehiculo
         
     }
-    public boolean puestoOcupado(){ // Indica si el puesto esta ocupado
+    public boolean estaOcupado(){ // Indica si el puesto esta ocupado
         return vehiculo!= null;
     }
     
     public Vehiculo getVehiculo (){ // Retorna el vehiculo ubicado en el puesto
         return vehiculo;
+    }
+    public void Ocupar (Vehiculo vehiculo){
+        this.vehiculo = vehiculo;
     }
     public void libre (){ // Deja el puesto libre, para otro vehiculo
         this.vehiculo = null;
