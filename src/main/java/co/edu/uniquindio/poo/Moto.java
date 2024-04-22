@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package co.edu.uniquindio.poo;
 
 /**
@@ -17,12 +13,12 @@ class Moto extends Vehiculo {
         this.velocidadMaxima = velocidadMaxima;
         
     }
-    public double getvelocidadMaxima(){
+    public double getvelocidadMaxima(){ // Obtener velocidad de la moto
         return velocidadMaxima;
 }
 
     @Override
-    public double getTarifaporHora() {
+    public double getTarifaporHora() { // Obtener el valor a pagar de la moto
        
         return 1.000;
        
