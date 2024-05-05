@@ -1,35 +1,33 @@
-
 package co.edu.uniquindio.poo;
 /**
  *
  * @author Sebastian Román - Yefry Fajardo - Santiago Gordillo
  */
-
 class Puesto {
-    private final int i;
-    private final int j;
-    private Vehiculo vehiculo; // Vehículo que ocupa un puesto, es null si está vacío
+    private int i;
+    private int j;
+    private Vehiculo vehiculo; // El vehículo que ocupa el puesto.
 
     public Puesto(int i, int j) {
         this.i = i;
         this.j = j;
-        this.vehiculo = null; // Puesto inicia sin vehículo
+        this.vehiculo = null; // El puesto empieza vacío.
     }
 
-    public boolean estaOcupado() { // Indica si el puesto está ocupado
-        return vehiculo != null;
+    public boolean estaOcupado() {
+        return vehiculo != null; // El puesto está ocupado si tiene un vehículo.
     }
 
-    public Vehiculo getVehiculo() { // Retorna el vehículo ubicado en el puesto
-        return vehiculo;
+    public Vehiculo getVehiculo() {
+        return vehiculo; // Retorna el vehículo que ocupa el puesto.
     }
 
-    public void ocupar(Vehiculo vehiculo) { // Ubica un vehículo en puesto disponible
-        this.vehiculo = vehiculo;
+    public void ocupar(Vehiculo vehiculo) {
+        this.vehiculo = vehiculo; // Ocupa el puesto con un vehículo.
     }
 
-    public void libre() { // Deja el puesto libre, para otro vehículo
-        this.vehiculo = null;
+    public void liberar() {
+        this.vehiculo = null; // Libera el puesto.
     }
 
     public int getPosicionI() {
@@ -40,3 +38,4 @@ class Puesto {
         return j;
     }
 }
+
