@@ -3,31 +3,43 @@ package co.edu.uniquindio.poo;
  *
  * @author Sebastian Román - Yefry Fajardo - Santiago Gordillo
  */
+import java.time.LocalDateTime;
+
 class Puesto {
     private int i;
     private int j;
-    private Vehiculo vehiculo; // El vehículo que ocupa el puesto.
+    private Vehiculo vehiculo;
+    private LocalDateTime fechaIngreso;
 
     public Puesto(int i, int j) {
         this.i = i;
         this.j = j;
-        this.vehiculo = null; // El puesto empieza vacío.
+        this.vehiculo = null;
+        this.fechaIngreso = null;
     }
 
     public boolean estaOcupado() {
-        return vehiculo != null; // El puesto está ocupado si tiene un vehículo.
+        return vehiculo != null;
     }
 
     public Vehiculo getVehiculo() {
-        return vehiculo; // Retorna el vehículo que ocupa el puesto.
+        return vehiculo;
     }
 
-    public void ocupar(Vehiculo vehiculo) {
-        this.vehiculo = vehiculo; // Ocupa el puesto con un vehículo.
+    public void ocupar(Vehiculo vehiculo, LocalDateTime fechaIngreso) {
+        if (estaOcupado()) {
+            throw new IllegalStateException("El puesto ya está ocupado.");
+        }
+        this.vehiculo = vehiculo;
+        this.fechaIngreso = fechaIngreso;
     }
 
     public void liberar() {
-        this.vehiculo = null; // Libera el puesto.
+        if (!estaOcupado()) {
+            throw new IllegalStateException("El puesto no está ocupado, no se puede liberar.");
+        }
+        this.vehiculo = null;
+        this.fechaIngreso = null;
     }
 
     public int getPosicionI() {
@@ -37,5 +49,8 @@ class Puesto {
     public int getPosicionJ() {
         return j;
     }
-}
 
+    public LocalDateTime getFechaIngreso() {
+        return fechaIngreso;
+    }
+}

@@ -1,4 +1,3 @@
-
 package co.edu.uniquindio.poo;
 
 /**
@@ -7,24 +6,29 @@ package co.edu.uniquindio.poo;
  */
 class Moto extends Vehiculo {
     private final double velocidadMaxima;
-    
-    public Moto (String modelo, String placa, String propietario, double velocidadMaxima){
-        super(modelo,placa,propietario);
+    private final String tipo;
+
+    public Moto(String placa, String modelo, String propietario, double velocidadMaxima, String tipo) {
+        super(placa, modelo, propietario);
         this.velocidadMaxima = velocidadMaxima;
-        
+        this.tipo = tipo;
     }
-    public double getvelocidadMaxima(){ // Obtener velocidad de la moto
+
+    public double getVelocidadMaxima() {
         return velocidadMaxima;
-}
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
 
     @Override
-    public double getTarifaporHora() { // Obtener el valor a pagar de la moto
-       
+    public double getTarifaporHora() {
         return 1.000;
-       
     }
-    
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return super.toString() + ", Velocidad máxima: " + velocidadMaxima + ", Tipo: " + tipo;
+    }
 }

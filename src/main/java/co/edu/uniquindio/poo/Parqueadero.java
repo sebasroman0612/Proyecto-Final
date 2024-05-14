@@ -1,72 +1,104 @@
 package co.edu.uniquindio.poo;
-/**
- *
- * @author Sebastian Román - Yefry Fajardo - Santiago Gordillo
- */
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 class Parqueadero {
-    private final List<Puesto> puestos; // Lista de puestos del parqueadero.
-    private final List<Vehiculo> vehiculos; // Lista de todos los vehículos que han parqueado.
-    private final List<Registro> registros; // Lista de registros de ingresos.
+    private final int maxI;
+    private final int maxJ;
+    private final List<Puesto> puestos;
+    private final List<Vehiculo> vehiculos;
+    private final double tarifaMotoClasica;
+    private final double tarifaMotoHibrida;
+    private final double tarifaCarro;
 
-    public Parqueadero(int numPuestos) {
+    public Parqueadero(int maxI, int maxJ, double tarifaMotoClasica, double tarifaMotoHibrida, double tarifaCarro) {
+        this.maxI = maxI;
+        this.maxJ = maxJ;
+        this.tarifaMotoClasica = tarifaMotoClasica;
+        this.tarifaMotoHibrida = tarifaMotoHibrida;
+        this.tarifaCarro = tarifaCarro;
         this.puestos = new ArrayList<>();
         this.vehiculos = new ArrayList<>();
-        this.registros = new ArrayList<>();
 
-        // Inicializar la lista de puestos con posiciones (i, j) únicas.
-        for (int i = 0; i < Math.sqrt(numPuestos); i++) {
-            for (int j = 0; j < Math.sqrt(numPuestos); j++) {
+        for (int i = 0; i < maxI; i++) {
+            for (int j = 0; j < maxJ; j++) {
                 puestos.add(new Puesto(i, j));
             }
         }
     }
 
-    public boolean estaOcupado(int i, int j) {
-        Puesto puesto = getPuesto(i, j);
-        return puesto != null && puesto.estaOcupado(); // Verifica si el puesto está ocupado.
+    public boolean validarPosicion(int i, int j) {
+        return i >= 0 && i < maxI && j >= 0 && j < maxJ;
     }
 
-    public Puesto getPuesto(int i, int j) {
-        return puestos.stream()
-                .filter(puesto -> puesto.getPosicionI() == i && puesto.getPosicionJ() == j)
-                .findFirst()
-                .orElse(null); // Retorna el puesto con la posición especificada.
-    }
-
-    public void ocuparPuesto(int i, int j, Vehiculo vehiculo) {
-        Puesto puesto = getPuesto(i, j);
-        if (puesto != null && !puesto.estaOcupado()) {
-            puesto.ocupar(vehiculo);
-            vehiculos.add(vehiculo); // Registrar el vehículo en el parqueadero.
-            registros.add(new Registro(puesto, vehiculo, LocalDateTime.now())); // Agregar registro.
-        } else {
-            System.out.println("El puesto en la posición (" + i + "," + j + ") está ocupado o no existe.");
+    public void ocuparPuesto(Vehiculo vehiculo, LocalDateTime fechaIngreso, int i, int j) {
+        if (!validarPosicion(i, j)) {
+            System.out.println("La posición especificada no es válida.");
+            return;
         }
+        Puesto puesto = puestos.get(i * maxJ + j);
+        if (puesto.estaOcupado()) {
+            System.out.println("El puesto en la posición (" + i + "," + j + ") ya está ocupado.");
+            return;
+        }
+        puesto.ocupar(vehiculo, fechaIngreso);
+        vehiculo.setTarifaporHora(obtenerTarifaPorTipo(vehiculo)); // Guardar la tarifa correspondiente al vehículo
+        vehiculos.add(vehiculo);
+        System.out.println("Vehículo registrado con éxito.");
     }
 
-    public String obtenerPropietario(int i, int j) {
-        Puesto puesto = getPuesto(i, j);
-        if (puesto != null && puesto.estaOcupado()) {
-            return puesto.getVehiculo().getPropietario(); // Retorna el propietario del vehículo en el puesto.
-        } else {
-            return "No hay vehículo en el puesto.";
+    private double obtenerTarifaPorTipo(Vehiculo vehiculo) {
+        if (vehiculo instanceof Moto) {
+            Moto moto = (Moto) vehiculo;
+            if (moto.getTipo().equalsIgnoreCase("Clásica")) {
+                return tarifaMotoClasica;
+            } else if (moto.getTipo().equalsIgnoreCase("Híbrida")) {
+                return tarifaMotoHibrida;
+            }
+        } else if (vehiculo instanceof Carro) {
+            return tarifaCarro;
         }
+        return 0.0; // Tarifa por defecto si el tipo de vehículo no coincide
+    }
+
+
+    public void liberarPuesto(int i, int j) {
+        if (!validarPosicion(i, j)) {
+            System.out.println("La posición especificada no es válida.");
+            return;
+        }
+        Puesto puesto = puestos.get(i * maxJ + j);
+        if (!puesto.estaOcupado()) {
+            System.out.println("El puesto en la posición (" + i + "," + j + ") no está ocupado.");
+            return;
+        }
+        puesto.liberar();
+        System.out.println("Puesto en la posición (" + i + "," + j + ") liberado.");
     }
 
     public List<Vehiculo> obtenerVehiculosParqueados() {
-        return vehiculos; // Retorna todos los vehículos parqueados.
+        return vehiculos;
     }
 
-    public void liberarPuesto(int i, int j) {
-        Puesto puesto = getPuesto(i, j);
-        if (puesto != null && puesto.estaOcupado()) {
-            puesto.liberar(); // Liberar el puesto.
-        } else {
-            System.out.println("No se puede liberar un puesto que no está ocupado.");
+    public Puesto obtenerPuestoPorVehiculo(Vehiculo vehiculo) {
+        for (Puesto puesto : puestos) {
+            if (puesto.getVehiculo() != null && puesto.getVehiculo().equals(vehiculo)) {
+                return puesto;
+            }
         }
+        return null;
+    }
+
+    public String obtenerPropietario(int i, int j) {
+        if (!validarPosicion(i, j)) {
+            return "Posición no válida.";
+        }
+        Puesto puesto = puestos.get(i * maxJ + j);
+        if (puesto == null || !puesto.estaOcupado()) {
+            return "No hay vehículo en el puesto.";
+        }
+        return puesto.getVehiculo().getPropietario();
     }
 }
