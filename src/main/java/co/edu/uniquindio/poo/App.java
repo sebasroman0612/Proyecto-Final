@@ -1,8 +1,5 @@
 package co.edu.uniquindio.poo;
-/**
- *
- * @author Sebastian Román - Yefry Fajardo - Santiago Gordillo
- */
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
@@ -34,31 +31,9 @@ public class App {
                 scanner.nextLine(); // Consumir el salto de línea
 
                 if (opcion == 1) {
-                    System.out.print("Ingrese la placa del carro: ");
-                    String placaCarro = scanner.nextLine();
-                    System.out.print("Ingrese el modelo del carro: ");
-                    String modeloCarro = scanner.nextLine();
-                    System.out.print("Ingrese el nombre del propietario del carro: ");
-                    String propietarioCarro = scanner.nextLine();
-
-                    Carro carro = new Carro(placaCarro, modeloCarro, propietarioCarro);
-                    ocuparPuesto(scanner, parqueadero, carro);
+                    registrarCarro(scanner, parqueadero);
                 } else if (opcion == 2) {
-                    System.out.print("Ingrese la placa de la moto: ");
-                    String placaMoto = scanner.nextLine();
-                    System.out.print("Ingrese el modelo de la moto: ");
-                    String modeloMoto = scanner.nextLine();
-                    System.out.print("Ingrese el nombre del propietario de la moto: ");
-                    String propietarioMoto = scanner.nextLine();
-                    System.out.print("Ingrese la velocidad máxima de la moto: ");
-                    double velocidadMaximaMoto = scanner.nextDouble();
-                    scanner.nextLine(); // Consumir el salto de línea
-                    
-                    System.out.print("Ingrese el tipo de moto (Clásica/Híbrida): ");
-                    String tipoMoto = scanner.nextLine();
-
-                    Moto moto = new Moto(placaMoto, modeloMoto, propietarioMoto, velocidadMaximaMoto, tipoMoto);
-                    ocuparPuesto(scanner, parqueadero, moto);
+                    registrarMoto(scanner, parqueadero);
                 } else {
                     System.out.println("Opción no válida.");
                 }
@@ -74,9 +49,54 @@ public class App {
                 Puesto puesto = parqueadero.obtenerPuestoPorVehiculo(vehiculo);
                 LocalDateTime fechaIngreso = puesto.getFechaIngreso();
                 System.out.println(vehiculo);
+                if (vehiculo instanceof Moto) {
+                    Moto moto = (Moto) vehiculo;
+                    System.out.println("Velocidad máxima: " + moto.getVelocidadMaxima());
+                }
                 System.out.println("Posición: (" + puesto.getPosicionI() + ", " + puesto.getPosicionJ() + "), Fecha de ingreso: " + fechaIngreso);
-                System.out.println("Tarifa por hora: " + vehiculo.getTarifaporHora());
+                System.out.println("Tarifa por hora: " + vehiculo.getTarifaPorHora());
             }
+        }
+    }
+
+    private static void registrarCarro(Scanner scanner, Parqueadero parqueadero) {
+        System.out.print("Ingrese la placa del carro: ");
+        String placaCarro = scanner.next();
+        System.out.print("Ingrese el modelo del carro: ");
+        String modeloCarro = scanner.next();
+        System.out.print("Ingrese el nombre del propietario del carro: ");
+        String propietarioCarro = scanner.next();
+
+        Carro carro = new Carro(placaCarro, modeloCarro, propietarioCarro);
+        ocuparPuesto(scanner, parqueadero, carro);
+    }
+
+    private static void registrarMoto(Scanner scanner, Parqueadero parqueadero) {
+        System.out.println("¿Qué tipo de moto desea registrar?");
+        System.out.println("1. Moto Clásica");
+        System.out.println("2. Moto Híbrida");
+        System.out.print("Seleccione una opción: ");
+        int opcionMoto = scanner.nextInt();
+        scanner.nextLine(); // Consumir el salto de línea
+
+        System.out.print("Ingrese la placa de la moto: ");
+        String placaMoto = scanner.nextLine();
+        System.out.print("Ingrese el modelo de la moto: ");
+        String modeloMoto = scanner.nextLine();
+        System.out.print("Ingrese el nombre del propietario de la moto: ");
+        String propietarioMoto = scanner.nextLine();
+        System.out.print("Ingrese la velocidad máxima de la moto: ");
+        double velocidadMaximaMoto = scanner.nextDouble();
+        scanner.nextLine(); // Consumir el salto de línea
+
+        if (opcionMoto == 1) {
+            MotoClasica motoClasica = new MotoClasica(placaMoto, modeloMoto, propietarioMoto, velocidadMaximaMoto);
+            ocuparPuesto(scanner, parqueadero, motoClasica);
+        } else if (opcionMoto == 2) {
+            MotoHibrida motoHibrida = new MotoHibrida(placaMoto, modeloMoto, propietarioMoto, velocidadMaximaMoto);
+            ocuparPuesto(scanner, parqueadero, motoHibrida);
+        } else {
+            System.out.println("Opción no válida.");
         }
     }
 
@@ -90,6 +110,11 @@ public class App {
         if (parqueadero.validarPosicion(i, j)) {
             LocalDateTime fechaIngreso = LocalDateTime.now();
             parqueadero.ocuparPuesto(vehiculo, fechaIngreso, i, j);
+            // Establecer la tarifa por hora en el objeto de la moto
+            if (vehiculo instanceof Moto) {
+                Moto moto = (Moto) vehiculo;
+                vehiculo.setTarifaPorHora(parqueadero.obtenerTarifaPorTipo(moto)); // Establecer la tarifa correspondiente
+            }
             System.out.println("Vehículo registrado con éxito.");
         } else {
             System.out.println("La posición especificada no es válida.");
