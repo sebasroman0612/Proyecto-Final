@@ -43,6 +43,23 @@ public class App {
                 seguirRegistrando = respuesta.equalsIgnoreCase("Si");
             }
 
+            mostrarEstadoParqueadero(parqueadero);
+
+            System.out.println("¿Desea liberar un puesto? (Si/No)");
+            String respuesta = scanner.next();
+            if (respuesta.equalsIgnoreCase("Si")) {
+                System.out.println("Ingrese la posición del puesto que desea liberar:");
+                System.out.print("I: ");
+                int i = scanner.nextInt();
+                System.out.print("J: ");
+                int j = scanner.nextInt();
+
+                double costo = parqueadero.liberarPuesto(i, j);
+                if (costo >= 0) {
+                    System.out.println("El costo del tiempo de estacionamiento es: $" + costo);
+                }
+            }
+
             List<Vehiculo> vehiculosParqueados = parqueadero.obtenerVehiculosParqueados();
             System.out.println("Vehículos parqueados:");
             for (Vehiculo vehiculo : vehiculosParqueados) {
@@ -118,6 +135,28 @@ public class App {
             System.out.println("Vehículo registrado con éxito.");
         } else {
             System.out.println("La posición especificada no es válida.");
+        }
+    }
+
+    private static void mostrarEstadoParqueadero(Parqueadero parqueadero) {
+        System.out.println("Estado del parqueadero:");
+        for (int i = 0; i < parqueadero.getMaxI(); i++) {
+            for (int j = 0; j < parqueadero.getMaxJ(); j++) {
+                Puesto puesto = parqueadero.obtenerPuesto(i, j);
+                if (puesto.estaOcupado()) {
+                    Vehiculo vehiculo = puesto.getVehiculo();
+                    if (vehiculo instanceof Carro) {
+                        System.out.print("C ");
+                    } else if (vehiculo instanceof MotoClasica) {
+                        System.out.print("MC ");
+                    } else if (vehiculo instanceof MotoHibrida) {
+                        System.out.print("MH ");
+                    }
+                } else {
+                    System.out.print("L ");
+                }
+            }
+            System.out.println();
         }
     }
 }

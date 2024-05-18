@@ -2,11 +2,6 @@ package co.edu.uniquindio.poo;
 
 import java.time.LocalDateTime;
 
-/**
- *
- * @author Sebastian Román - Yefry Fajardo - Santiago Gordillo
- */
-
 class Puesto {
     private int i;
     private int j;

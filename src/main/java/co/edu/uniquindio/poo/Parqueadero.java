@@ -1,6 +1,7 @@
 package co.edu.uniquindio.poo;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,44 +39,53 @@ class Parqueadero {
             System.out.println("La posición especificada no es válida.");
             return;
         }
-        Puesto puesto = puestos.get(i * maxJ + j);
+        Puesto puesto = obtenerPuesto(i, j);
         if (puesto.estaOcupado()) {
             System.out.println("El puesto en la posición (" + i + "," + j + ") ya está ocupado.");
             return;
         }
         puesto.ocupar(vehiculo, fechaIngreso);
-        vehiculo.setTarifaporHora(obtenerTarifaPorTipo(vehiculo)); // Guardar la tarifa correspondiente al vehículo
+        vehiculo.setTarifaPorHora(obtenerTarifaPorTipo(vehiculo)); // Guardar la tarifa correspondiente al vehículo
         vehiculos.add(vehiculo);
         System.out.println("Vehículo registrado con éxito.");
     }
 
-    private double obtenerTarifaPorTipo(Vehiculo vehiculo) {
+    public double liberarPuesto(int i, int j) {
+        if (!validarPosicion(i, j)) {
+            System.out.println("La posición especificada no es válida.");
+            return -1;
+        }
+        Puesto puesto = obtenerPuesto(i, j);
+        if (!puesto.estaOcupado()) {
+            System.out.println("El puesto en la posición (" + i + "," + j + ") no está ocupado.");
+            return -1;
+        }
+        Vehiculo vehiculo = puesto.getVehiculo();
+        LocalDateTime fechaIngreso = puesto.getFechaIngreso();
+        LocalDateTime fechaSalida = LocalDateTime.now();
+        long horas = ChronoUnit.HOURS.between(fechaIngreso, fechaSalida);
+        if (horas == 0) {
+            horas = 1; // Si el vehículo estuvo menos de una hora, cobramos una hora mínima
+        }
+        double costo = horas * vehiculo.getTarifaPorHora();
+        puesto.liberar();
+        vehiculos.remove(vehiculo);
+        System.out.println("Vehículo liberado con éxito. Costo: $" + costo);
+        return costo;
+    }
+
+    double obtenerTarifaPorTipo(Vehiculo vehiculo) {
         if (vehiculo instanceof Moto) {
             Moto moto = (Moto) vehiculo;
-            if (moto.getTipo().equalsIgnoreCase("Clásica")) {
+            if (moto instanceof MotoClasica) {
                 return tarifaMotoClasica;
-            } else if (moto.getTipo().equalsIgnoreCase("Híbrida")) {
+            } else if (moto instanceof MotoHibrida) {
                 return tarifaMotoHibrida;
             }
         } else if (vehiculo instanceof Carro) {
             return tarifaCarro;
         }
         return 0.0; // Tarifa por defecto si el tipo de vehículo no coincide
-    }
-
-
-    public void liberarPuesto(int i, int j) {
-        if (!validarPosicion(i, j)) {
-            System.out.println("La posición especificada no es válida.");
-            return;
-        }
-        Puesto puesto = puestos.get(i * maxJ + j);
-        if (!puesto.estaOcupado()) {
-            System.out.println("El puesto en la posición (" + i + "," + j + ") no está ocupado.");
-            return;
-        }
-        puesto.liberar();
-        System.out.println("Puesto en la posición (" + i + "," + j + ") liberado.");
     }
 
     public List<Vehiculo> obtenerVehiculosParqueados() {
@@ -91,14 +101,15 @@ class Parqueadero {
         return null;
     }
 
-    public String obtenerPropietario(int i, int j) {
-        if (!validarPosicion(i, j)) {
-            return "Posición no válida.";
-        }
-        Puesto puesto = puestos.get(i * maxJ + j);
-        if (puesto == null || !puesto.estaOcupado()) {
-            return "No hay vehículo en el puesto.";
-        }
-        return puesto.getVehiculo().getPropietario();
+    public int getMaxI() {
+        return maxI;
+    }
+
+    public int getMaxJ() {
+        return maxJ;
+    }
+
+    public Puesto obtenerPuesto(int i, int j) {
+        return puestos.get(i * maxJ + j);
     }
 }

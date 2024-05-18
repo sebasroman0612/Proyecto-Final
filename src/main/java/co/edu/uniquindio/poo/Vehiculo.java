@@ -1,10 +1,5 @@
 package co.edu.uniquindio.poo;
 
-/**
- *
- * @author Sebastian Román - Yefry Fajardo - Santiago Gordillo
- */
-
 abstract class Vehiculo {
     protected String placa;
     protected String modelo;
@@ -42,4 +37,3 @@ abstract class Vehiculo {
         return "Placa: " + placa + ", Modelo: " + modelo + ", Propietario: " + propietario;
     }
 }
-
