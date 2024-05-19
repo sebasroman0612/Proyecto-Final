@@ -27,6 +27,7 @@ public class App {
                 int opcion = scanner.nextInt();
                 scanner.nextLine(); // Consumir el salto de línea
 
+<<<<<<< HEAD
                 switch (opcion) {
                     case 1:
                         registrarVehiculo(scanner, parqueadero);
@@ -51,6 +52,14 @@ public class App {
                         break;
                     default:
                         System.out.println("Opción no válida.");
+=======
+                if (opcion == 1) {
+                    registrarCarro(scanner, parqueadero);
+                } else if (opcion == 2) {
+                    registrarMoto(scanner, parqueadero);
+                } else {
+                    System.out.println("Opción no válida.");
+>>>>>>> f771173a79d8e65e0cd8683133ef27097d9ed186
                 }
 
                 if (continuar) {
@@ -62,6 +71,7 @@ public class App {
         }
     }
 
+<<<<<<< HEAD
     private static void mostrarMenu() {
         System.out.println("\n¿Qué desea realizar?");
         System.out.println("1. Registrar un nuevo vehículo");
@@ -129,6 +139,79 @@ public class App {
             ocuparPuesto(scanner, parqueadero, motoHibrida);
         } else {
             System.out.println("Opción no válida.");
+=======
+            mostrarEstadoParqueadero(parqueadero);
+
+            System.out.println("¿Desea liberar un puesto? (Si/No)");
+            String respuesta = scanner.next();
+            if (respuesta.equalsIgnoreCase("Si")) {
+                System.out.println("Ingrese la posición del puesto que desea liberar:");
+                System.out.print("I: ");
+                int i = scanner.nextInt();
+                System.out.print("J: ");
+                int j = scanner.nextInt();
+
+                double costo = parqueadero.liberarPuesto(i, j);
+                if (costo >= 0) {
+                    System.out.println("El costo del tiempo de estacionamiento es: $" + costo);
+                }
+            }
+
+            List<Vehiculo> vehiculosParqueados = parqueadero.obtenerVehiculosParqueados();
+            System.out.println("Vehículos parqueados:");
+            for (Vehiculo vehiculo : vehiculosParqueados) {
+                Puesto puesto = parqueadero.obtenerPuestoPorVehiculo(vehiculo);
+                LocalDateTime fechaIngreso = puesto.getFechaIngreso();
+                System.out.println(vehiculo);
+                if (vehiculo instanceof Moto) {
+                    Moto moto = (Moto) vehiculo;
+                    System.out.println("Velocidad máxima: " + moto.getVelocidadMaxima());
+                }
+                System.out.println("Posición: (" + puesto.getPosicionI() + ", " + puesto.getPosicionJ() + "), Fecha de ingreso: " + fechaIngreso);
+                System.out.println("Tarifa por hora: " + vehiculo.getTarifaPorHora());
+            }
+>>>>>>> f771173a79d8e65e0cd8683133ef27097d9ed186
+        }
+    }
+
+    private static void registrarCarro(Scanner scanner, Parqueadero parqueadero) {
+        System.out.print("Ingrese la placa del carro: ");
+        String placaCarro = scanner.next();
+        System.out.print("Ingrese el modelo del carro: ");
+        String modeloCarro = scanner.next();
+        System.out.print("Ingrese el nombre del propietario del carro: ");
+        String propietarioCarro = scanner.next();
+
+        Carro carro = new Carro(placaCarro, modeloCarro, propietarioCarro);
+        ocuparPuesto(scanner, parqueadero, carro);
+    }
+
+    private static void registrarMoto(Scanner scanner, Parqueadero parqueadero) {
+        System.out.println("¿Qué tipo de moto desea registrar?");
+        System.out.println("1. Moto Clásica");
+        System.out.println("2. Moto Híbrida");
+        System.out.print("Seleccione una opción: ");
+        int opcionMoto = scanner.nextInt();
+        scanner.nextLine(); // Consumir el salto de línea
+
+        System.out.print("Ingrese la placa de la moto: ");
+        String placaMoto = scanner.nextLine();
+        System.out.print("Ingrese el modelo de la moto: ");
+        String modeloMoto = scanner.nextLine();
+        System.out.print("Ingrese el nombre del propietario de la moto: ");
+        String propietarioMoto = scanner.nextLine();
+        System.out.print("Ingrese la velocidad máxima de la moto: ");
+        double velocidadMaximaMoto = scanner.nextDouble();
+        scanner.nextLine(); // Consumir el salto de línea
+
+        if (opcionMoto == 1) {
+            MotoClasica motoClasica = new MotoClasica(placaMoto, modeloMoto, propietarioMoto, velocidadMaximaMoto);
+            ocuparPuesto(scanner, parqueadero, motoClasica);
+        } else if (opcionMoto == 2) {
+            MotoHibrida motoHibrida = new MotoHibrida(placaMoto, modeloMoto, propietarioMoto, velocidadMaximaMoto);
+            ocuparPuesto(scanner, parqueadero, motoHibrida);
+        } else {
+            System.out.println("Opción no válida.");
         }
     }
 
@@ -142,6 +225,10 @@ public class App {
         if (parqueadero.validarPosicion(i, j)) {
             LocalDateTime fechaIngreso = LocalDateTime.now();
             parqueadero.ocuparPuesto(vehiculo, fechaIngreso, i, j);
+<<<<<<< HEAD
+=======
+            // Establecer la tarifa por hora en el objeto de la moto
+>>>>>>> f771173a79d8e65e0cd8683133ef27097d9ed186
             if (vehiculo instanceof Moto) {
                 Moto moto = (Moto) vehiculo;
                 vehiculo.setTarifaPorHora(parqueadero.obtenerTarifaPorTipo(moto)); // Establecer la tarifa correspondiente
@@ -152,6 +239,7 @@ public class App {
         }
     }
 
+<<<<<<< HEAD
     private static void liberarPuesto(Scanner scanner, Parqueadero parqueadero) {
         System.out.println("Ingrese la posición del puesto que desea liberar:");
         System.out.print("I: ");
@@ -181,6 +269,8 @@ public class App {
         }
     }
 
+=======
+>>>>>>> f771173a79d8e65e0cd8683133ef27097d9ed186
     private static void mostrarEstadoParqueadero(Parqueadero parqueadero) {
         System.out.println("Estado del parqueadero:");
         for (int i = 0; i < parqueadero.getMaxI(); i++) {
@@ -202,6 +292,7 @@ public class App {
             System.out.println();
         }
     }
+<<<<<<< HEAD
 
     private static void buscarVehiculo(Scanner scanner, Parqueadero parqueadero) {
         System.out.println("¿Cómo desea buscar el vehículo?");
@@ -253,4 +344,6 @@ public class App {
         System.out.println("Total ganado por motos híbridas: $" + totalGanadoMotosHibridas);
         System.out.println("Total ganado por carros: $" + totalGanadoCarros);
     }
+=======
+>>>>>>> f771173a79d8e65e0cd8683133ef27097d9ed186
 }

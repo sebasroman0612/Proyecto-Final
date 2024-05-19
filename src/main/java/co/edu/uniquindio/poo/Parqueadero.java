@@ -111,6 +111,7 @@ class Parqueadero {
 
     public Puesto obtenerPuesto(int i, int j) {
         return puestos.get(i * maxJ + j);
+<<<<<<< HEAD
     }
 
     public List<Vehiculo> buscarVehiculosPorPropietario(String propietario) {
@@ -149,5 +150,7 @@ class Parqueadero {
             }
         }
         return total;
+=======
+>>>>>>> f771173a79d8e65e0cd8683133ef27097d9ed186
     }
 }
