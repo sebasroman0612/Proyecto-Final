@@ -6,7 +6,21 @@ abstract class Vehiculo {
     protected String propietario;
     protected double tarifaPorHora;
 
+
+
+    
+
     public Vehiculo(String placa, String modelo, String propietario) {
+        if (placa == null) {
+            throw new IllegalArgumentException("Placa no puede ser nulo");
+        }
+        if (modelo == null) {
+            throw new IllegalArgumentException("Modelo no puede ser nulo");
+        }
+        if (propietario == null) {
+            throw new IllegalArgumentException("Propietario no puede ser nulo");
+        }
+
         this.placa = placa;
         this.modelo = modelo;
         this.propietario = propietario;
@@ -28,7 +42,14 @@ abstract class Vehiculo {
         return tarifaPorHora;
     }
 
+    public void setPropietario(String propietario) {
+        this.propietario = propietario;
+    }
+
     public void setTarifaPorHora(double tarifaPorHora) {
+        if (tarifaPorHora < 0) {
+            throw new IllegalArgumentException("La tarifa por hora no puede ser negativa.");
+        }
         this.tarifaPorHora = tarifaPorHora;
     }
 
