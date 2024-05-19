@@ -1,13 +1,10 @@
 package co.edu.uniquindio.poo;
-/**
- *
- * @author Sebastian Román - Yefry Fajardo - Santiago Gordillo
- */
+
 abstract class Vehiculo {
     protected String placa;
     protected String modelo;
     protected String propietario;
-    protected double tarifaPorHora; // Agregar el campo de tarifa por hora
+    protected double tarifaPorHora;
 
     public Vehiculo(String placa, String modelo, String propietario) {
         this.placa = placa;
@@ -27,11 +24,11 @@ abstract class Vehiculo {
         return propietario;
     }
 
-    public double getTarifaporHora() {
+    public double getTarifaPorHora() {
         return tarifaPorHora;
     }
 
-    public void setTarifaporHora(double tarifaPorHora) {
+    public void setTarifaPorHora(double tarifaPorHora) {
         this.tarifaPorHora = tarifaPorHora;
     }
 
