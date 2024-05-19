@@ -51,7 +51,7 @@ class Puesto {
     public LocalDateTime getFechaIngreso() {
         return fechaIngreso;
     }
-<<<<<<< HEAD
+
 
     public double getGanancias() {
         if (estaOcupado()) {
@@ -61,6 +61,5 @@ class Puesto {
         return 0;
     }
 }
-=======
-}
->>>>>>> f771173a79d8e65e0cd8683133ef27097d9ed186
+
+
