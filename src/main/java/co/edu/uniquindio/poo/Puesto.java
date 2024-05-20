@@ -1,6 +1,7 @@
 package co.edu.uniquindio.poo;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 class Puesto {
     private int i;
@@ -50,4 +51,15 @@ class Puesto {
     public LocalDateTime getFechaIngreso() {
         return fechaIngreso;
     }
+
+
+    public double getGanancias() {
+        if (estaOcupado()) {
+            long horas = ChronoUnit.HOURS.between(fechaIngreso, LocalDateTime.now());
+            return horas * vehiculo.getTarifaPorHora();
+        }
+        return 0;
+    }
 }
+
+

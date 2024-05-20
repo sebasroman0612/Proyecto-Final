@@ -112,4 +112,42 @@ class Parqueadero {
     public Puesto obtenerPuesto(int i, int j) {
         return puestos.get(i * maxJ + j);
     }
+
+    public List<Vehiculo> buscarVehiculosPorPropietario(String propietario) {
+        List<Vehiculo> vehiculosEncontrados = new ArrayList<>();
+        for (Puesto puesto : puestos) {
+            if (puesto.estaOcupado() && puesto.getVehiculo().getPropietario().equalsIgnoreCase(propietario)) {
+                vehiculosEncontrados.add(puesto.getVehiculo());
+            }
+        }
+        return vehiculosEncontrados;
+    }
+
+    public Vehiculo buscarVehiculoPorPlaca(String placa) {
+        for (Puesto puesto : puestos) {
+            if (puesto.estaOcupado() && puesto.getVehiculo().getPlaca().equalsIgnoreCase(placa)) {
+                return puesto.getVehiculo();
+            }
+        }
+        return null;
+    }
+
+    public double calcularTotalGanancias() {
+        double total = 0;
+        for (Puesto puesto : puestos) {
+            total += puesto.getGanancias();
+        }
+        return total;
+    }
+
+    public double calcularGananciasPorTipo(Class<? extends Vehiculo> tipo) {
+        double total = 0;
+        for (Puesto puesto : puestos) {
+            Vehiculo vehiculo = puesto.getVehiculo();
+            if (tipo.isInstance(vehiculo)) {
+                total += puesto.getGanancias();
+            }
+        }
+        return total;
+    }
 }
