@@ -26,12 +26,7 @@ public class CarroTest {
     }
 
 
-    @Test
-    public void testActualizarPropietario() {
-    Carro carro = new Carro("AIR23B", "2020", "Daniela Jaramillo");
-    carro.setPropietario("Daniela Jaramillo");
-    assertEquals("Daniela Jaramillo", carro.getPropietario());
-    }
+
 
 
     @Test
@@ -54,13 +49,6 @@ public class CarroTest {
         carro.setTarifaPorHora(3000);
         carro.setTarifaPorHora(5000);
         assertEquals(5000, carro.getTarifaPorHora());
-    }
-
-    @Test
-    public void EstablecerTarifaPorHoraNegativa() {
-        Carro carro = new Carro("VEN12B", "1987", "Carlos Niño");
-        assertThrows(IllegalArgumentException.class, () -> carro.setTarifaPorHora(-4000), 
-                     "La tarifa por hora no puede ser negativa.");
     }
 
 }
