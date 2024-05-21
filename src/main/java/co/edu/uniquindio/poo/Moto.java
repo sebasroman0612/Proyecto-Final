@@ -1,8 +1,12 @@
 package co.edu.uniquindio.poo;
 
+/**
+ *
+ * @author Sebastian Román - Yefry Fajardo - Santiago Gordillo
+ */
 class Moto extends Vehiculo {
     private String tipo;
-    private double velocidadMaxima; // Nueva variable para la velocidad máxima
+    private double velocidadMaxima; //  variable para la velocidad máxima
 
     public Moto(String placa, String modelo, String propietario, double velocidadMaxima, String tipo) {
         super(placa, modelo, propietario);

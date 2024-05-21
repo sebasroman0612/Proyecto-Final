@@ -1,29 +1,26 @@
 package co.edu.uniquindio.poo;
 
-abstract class Vehiculo {
-    protected String placa;
-    protected String modelo;
-    protected String propietario;
-    protected double tarifaPorHora;
+/**
+ *
+ * @author Sebastian Román - Yefry Fajardo - Santiago Gordillo
+ */
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.HashMap;
+import java.util.Map;
 
-
-
-    
+public abstract class Vehiculo {
+    private String placa;
+    private String modelo;
+    private String propietario;
+    private double tarifaPorHora;
+    private Map<LocalDate, Double> gananciasDiarias;
 
     public Vehiculo(String placa, String modelo, String propietario) {
-        if (placa == null) {
-            throw new IllegalArgumentException("Placa no puede ser nulo");
-        }
-        if (modelo == null) {
-            throw new IllegalArgumentException("Modelo no puede ser nulo");
-        }
-        if (propietario == null) {
-            throw new IllegalArgumentException("Propietario no puede ser nulo");
-        }
-
         this.placa = placa;
         this.modelo = modelo;
         this.propietario = propietario;
+        this.gananciasDiarias = new HashMap<>();
     }
 
     public String getPlaca() {
@@ -42,15 +39,26 @@ abstract class Vehiculo {
         return tarifaPorHora;
     }
 
-    public void setPropietario(String propietario) {
-        this.propietario = propietario;
+    public void setTarifaPorHora(double tarifaPorHora) {
+        this.tarifaPorHora = tarifaPorHora;
     }
 
-    public void setTarifaPorHora(double tarifaPorHora) {
-        if (tarifaPorHora < 0) {
-            throw new IllegalArgumentException("La tarifa por hora no puede ser negativa.");
+    public void registrarPago(LocalDate fecha, double monto) {
+        gananciasDiarias.put(fecha, gananciasDiarias.getOrDefault(fecha, 0.0) + monto);
+    }
+
+    public double obtenerGananciasPorFecha(LocalDate fecha) {
+        return gananciasDiarias.getOrDefault(fecha, 0.0);
+    }
+
+    public double obtenerGananciasPorMes(YearMonth fecha) {
+        double gananciasDelMes = 0.0;
+        for (LocalDate fechaDia : gananciasDiarias.keySet()) {
+            if (YearMonth.from(fechaDia).equals(fecha)) {
+                gananciasDelMes += gananciasDiarias.get(fechaDia);
+            }
         }
-        this.tarifaPorHora = tarifaPorHora;
+        return gananciasDelMes;
     }
 
     @Override
